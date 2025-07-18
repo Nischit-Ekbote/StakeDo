@@ -1,4 +1,7 @@
 use anchor_lang::prelude::*;
+use std::str::FromStr;
+
+const APP_OWNER: &str = "3qN3UWgALSzwV2gpsFv19MeqkGb4SozRShTeqTgXoDRc";
 
 declare_id!("2fakZCn8BtJsuqAeH7N9cHYxwMyMmZjYjXvjjStTTYTg");
 
@@ -43,6 +46,25 @@ pub mod stake_do {
         
         Ok(())
     }
+    pub fn expire_todo(ctx: Context<ExpireTodo>, todo_id: u64) -> Result<()> {
+    let todo = &mut ctx.accounts.todo_account;
+    let current_time = Clock::get()?.unix_timestamp;
+
+    require!(todo.deadline.is_some(), StakeDoError::NoDeadline);
+    require!(current_time > todo.deadline.unwrap(), StakeDoError::DeadlineNotReached);
+    require!(!todo.is_completed, StakeDoError::AlreadyCompleted);
+
+    let total_lamports = **ctx.accounts.todo_account.to_account_info().lamports.borrow();
+    let to_owner = total_lamports * 30 / 100;
+    let to_user = total_lamports - to_owner;
+
+    **ctx.accounts.todo_account.to_account_info().lamports.borrow_mut() -= total_lamports;
+    **ctx.accounts.owner.to_account_info().lamports.borrow_mut() += to_owner;
+    **ctx.accounts.user.to_account_info().lamports.borrow_mut() += to_user;
+
+    Ok(())
+}
+
 }
 
 #[derive(Accounts)]
@@ -118,6 +140,25 @@ pub struct DeleteTodo<'info> {
     pub todo_account: Account<'info, TodoAccount>,
 }
 
+#[derive(Accounts)]
+#[instruction(todo_id: u64)]
+pub struct ExpireTodo<'info> {
+    #[account(mut)]
+    pub user: Signer<'info>,
+
+    /// CHECK: This is safe because we are only transferring lamports to it
+    #[account(mut, address = Pubkey::from_str(APP_OWNER).unwrap())]
+    pub owner: AccountInfo<'info>,
+
+    #[account(
+        mut,
+        seeds = [b"todo", user.key().as_ref(), &todo_id.to_le_bytes()],
+        bump
+    )]
+    pub todo_account: Account<'info, TodoAccount>,
+}
+
+
 #[account]
 pub struct TodoAccount {
     pub todo_id: u64,
@@ -136,6 +177,10 @@ pub enum StakeDoError {
     AlreadyCompleted,
     #[msg("Todo Not Completed.")]
     TodoNotCompleted,
+    #[msg("Deadline not yet reached.")]
+    DeadlineNotReached,
+    #[msg("No deadline set.")]
+    NoDeadline,
 }
 
 
