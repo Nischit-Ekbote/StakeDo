@@ -96,7 +96,7 @@ const StakeDoLanding: React.FC = () => {
           <div className="text-center max-w-4xl mx-auto">
             {/* Logo */}
             <h1 className="text-8xl md:text-9xl text-transparent mb-6 text-white tracking-tight">
-              Stake-<span className='bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 bg-clip-text text-transparent'>Do</span>
+              Stake-<span className='bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 bg-clip-text text-transparent tracking-tight'>Do</span>
             </h1>
             
             {/* Tagline */}

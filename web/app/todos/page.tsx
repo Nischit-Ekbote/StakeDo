@@ -9,6 +9,8 @@ import Link from "next/link"
 import { BN } from "bn.js"
 import { getProgram } from "../util/getProgramFrontend"
 import { todo } from "../types/todo"
+import { formatDate } from "../util/formatDate"
+import { isOverdue } from "../util/isOverDue"
 
 const Todo: React.FC = () => {
   const wallet = useAnchorWallet()
@@ -20,11 +22,6 @@ const Todo: React.FC = () => {
   const [todos, setTodos] = useState<todo[]>([])
   const [todoId, setTodoId] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
-
-
-  useEffect(() => {
-    console.log("Current RPC endpoint:", connection.rpcEndpoint)
-  }, [connection])
 
   const handleCreate = async (): Promise<void> => {
     if (!wallet || !wallet.publicKey || !wallet.signTransaction) {
@@ -60,7 +57,6 @@ const Todo: React.FC = () => {
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
       const signedTx = await wallet.signTransaction(tx)
       const signature = await connection.sendRawTransaction(signedTx.serialize())
-      console.log("signature")
       const latestBlockhash = await connection.getLatestBlockhash()
       await connection.confirmTransaction({
         signature,
@@ -76,7 +72,6 @@ const Todo: React.FC = () => {
       const message = err?.message || err?.toString() || ""
 
       if (message.includes("already been processed") || message.includes("custom program error: 0x0")) {
-        console.log(message)
         toast.success("✅ Todo created!")
         setTitle("")
         setDescription("")
@@ -102,22 +97,10 @@ const Todo: React.FC = () => {
       }
       setTodos(data)
       setTodoId(data.length + 1)
-      console.log("Todos fetched:", data)
     } catch (error) {
       console.error("Error fetching todos:", error)
       toast.error("Failed to fetch todos.")
     }
-  }
-
-  const formatDeadline = (timestamp: number | null): string => {
-    if (!timestamp) return 'No deadline'
-    const date = new Date(timestamp * 1000)
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-  }
-
-  const isOverdue = (deadline: number | null): boolean => {
-    if (!deadline) return false
-    return new Date(deadline * 1000) < new Date()
   }
 
   useEffect(() => {
@@ -181,7 +164,7 @@ const Todo: React.FC = () => {
                   wallet={wallet}
                   connection={connection}
                   fetchTodos={fetchTodos}
-                  formatDeadline={formatDeadline}
+                  formatDeadline={formatDate}
                   isOverdue={isOverdue}
                 />
               ))}
@@ -199,8 +182,8 @@ const TodoItem: React.FC<{
   wallet: any
   connection: any
   fetchTodos: () => void
-  formatDeadline: (timestamp: number | null) => string
-  isOverdue: (deadline: number | null) => boolean
+  formatDeadline: (timestamp: string | null) => string
+  isOverdue: (deadline: string | null) => boolean
 }> = ({ item, wallet, connection, fetchTodos, formatDeadline, isOverdue }) => {
   const [loading, setLoading] = useState(false)
 

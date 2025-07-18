@@ -27,10 +27,6 @@ const CreateTodo: React.FC = () => {
   const [todoId, setTodoId] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    console.log("Current RPC endpoint:", connection.rpcEndpoint)
-  }, [connection])
-
   const handleCreate = async (): Promise<void> => {
     if (!wallet || !wallet.publicKey || !wallet.signTransaction) {
       toast.error("Please connect your wallet.")
@@ -65,7 +61,6 @@ const CreateTodo: React.FC = () => {
       tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
       const signedTx = await wallet.signTransaction(tx)
       const signature = await connection.sendRawTransaction(signedTx.serialize())
-      console.log("signature")
       const latestBlockhash = await connection.getLatestBlockhash()
       await connection.confirmTransaction({
         signature,
@@ -81,14 +76,13 @@ const CreateTodo: React.FC = () => {
       const message = err?.message || err?.toString() || ""
 
       if (message.includes("already been processed") || message.includes("custom program error: 0x0")) {
-        console.log(message)
-        toast.success("✅ Todo created!")
+        toast.success("Todo created!")
         setTitle("")
         setDescription("")
         setDeadline("")
         return
       }
-      console.error("❌ Error creating todo:", err)
+      console.error("Error creating todo:", err)
       toast.error("Failed to create todo.")
     } finally {
       setLoading(false)
@@ -107,9 +101,8 @@ const CreateTodo: React.FC = () => {
       }
       setTodos(data)
       setTodoId(data.length + 1)
-      console.log("✅ Todos fetched:", data)
     } catch (error) {
-      console.error("❌ Error fetching todos:", error)
+      console.error("Error fetching todos:", error)
       toast.error("Failed to fetch todos.")
     }
   }

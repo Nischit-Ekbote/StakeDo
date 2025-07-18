@@ -27,7 +27,6 @@ function TodoList() {
       }
 
       setTodos(data);
-      console.log("Todos fetched:", data);
     } catch (error) {
       console.error("Error fetching todos:", error);
     }
