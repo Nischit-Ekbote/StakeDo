@@ -241,12 +241,17 @@ const TodoItem: React.FC<{
       await connection.confirmTransaction(sig, "confirmed");
 
       toast.success("Todo marked as complete!");
-      fetchTodos();
-    } catch (err) {
+    } catch (err : any) {
+      const message = err?.message || err?.toString() || ""
+      if (message.includes("already been processed") || message.includes("custom program error: 0x0")) {
+        toast.success("Todo marked as complete!")
+        return
+      }
       console.error("Failed to complete todo:", err);
       toast.error("Failed to mark as complete");
     } finally {
       setLoading(false);
+      fetchTodos()
     }
   };
 

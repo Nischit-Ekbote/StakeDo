@@ -35,13 +35,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* ✅ Manually add the Google Fonts link */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster richColors={true}/>
+        <Toaster richColors={true} />
         <WalletContextProvider>
-          <FloatingDockBar/>
-          { children }
+          <FloatingDockBar />
+          {children}
         </WalletContextProvider>
       </body>
     </html>
