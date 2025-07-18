@@ -46,7 +46,7 @@ const SolanaWalletDashboard: React.FC = () => {
           return {
             signature: sig.signature,
             slot: sig.slot,
-            timestamp: sig.blockTime,
+            timestamp: sig.blockTime ?? null,
             fee: tx?.meta?.fee || 0,
             status: tx?.meta?.err ? 'failed' as const : 'success' as const
           }

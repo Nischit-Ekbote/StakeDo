@@ -74,8 +74,6 @@ export async function POST(req: NextRequest) {
       )
       .accounts({
         user: userKey,
-        todoAccount: todoPda,
-        systemProgram: SystemProgram.programId,
       })
       .instruction(); 
 
