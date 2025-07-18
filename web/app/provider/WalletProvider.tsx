@@ -14,7 +14,7 @@ import {
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 
 export const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const endpoint = useMemo(() => 'http://127.0.0.1:8899', [])
+  const endpoint = useMemo(() => 'https://api.devnet.solana.com', [])
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [])
 
   return (

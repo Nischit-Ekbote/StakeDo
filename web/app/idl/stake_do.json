@@ -116,6 +116,61 @@
       ]
     },
     {
+      "name": "expire_todo",
+      "discriminator": [
+        212,
+        49,
+        237,
+        116,
+        171,
+        249,
+        38,
+        232
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "owner",
+          "writable": true
+        },
+        {
+          "name": "todo_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  100,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "todo_id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "todo_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "initialize_todo",
       "discriminator": [
         159,
@@ -269,6 +324,16 @@
       "code": 6001,
       "name": "TodoNotCompleted",
       "msg": "Todo Not Completed."
+    },
+    {
+      "code": 6002,
+      "name": "DeadlineNotReached",
+      "msg": "Deadline not yet reached."
+    },
+    {
+      "code": 6003,
+      "name": "NoDeadline",
+      "msg": "No deadline set."
     }
   ],
   "types": [

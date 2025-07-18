@@ -122,6 +122,61 @@ export type StakeDo = {
       ]
     },
     {
+      "name": "expireTodo",
+      "discriminator": [
+        212,
+        49,
+        237,
+        116,
+        171,
+        249,
+        38,
+        232
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "owner",
+          "writable": true
+        },
+        {
+          "name": "todoAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  100,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "todoId"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "todoId",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "initializeTodo",
       "discriminator": [
         159,
@@ -275,6 +330,16 @@ export type StakeDo = {
       "code": 6001,
       "name": "todoNotCompleted",
       "msg": "Todo Not Completed."
+    },
+    {
+      "code": 6002,
+      "name": "deadlineNotReached",
+      "msg": "Deadline not yet reached."
+    },
+    {
+      "code": 6003,
+      "name": "noDeadline",
+      "msg": "No deadline set."
     }
   ],
   "types": [

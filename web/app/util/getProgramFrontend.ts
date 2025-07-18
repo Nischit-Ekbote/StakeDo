@@ -3,7 +3,7 @@ import { Program, Idl, Provider } from "@coral-xyz/anchor"
 import idl from "../idl/stake_do.json"
 import type { StakeDo } from "../types/stake_do"
 
-const connection = new Connection("http://127.0.0.1:8899", "confirmed")
+const connection = new Connection("https://api.devnet.solana.com", "confirmed")
 
 export const getProgram = (wallet: Provider["wallet"]): Program<StakeDo> => {
   const provider: Provider = {

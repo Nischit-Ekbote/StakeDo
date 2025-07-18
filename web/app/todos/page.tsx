@@ -102,19 +102,11 @@ const Todo: React.FC = () => {
       }
       setTodos(data)
       setTodoId(data.length + 1)
-      console.log("✅ Todos fetched:", data)
+      console.log("Todos fetched:", data)
     } catch (error) {
-      console.error("❌ Error fetching todos:", error)
+      console.error("Error fetching todos:", error)
       toast.error("Failed to fetch todos.")
     }
-  }
-
-  const handleComplete = async (todoItem: todo): Promise<void> => {
-    // This will be handled by individual TodoItem components
-  }
-
-  const handleDelete = async (todoItem: todo): Promise<void> => {
-    // This will be handled by individual TodoItem components
   }
 
   const formatDeadline = (timestamp: number | null): string => {
@@ -248,10 +240,10 @@ const TodoItem: React.FC<{
       const sig = await connection.sendRawTransaction(signedTx.serialize());
       await connection.confirmTransaction(sig, "confirmed");
 
-      toast.success("✅ Todo marked as complete!");
+      toast.success("Todo marked as complete!");
       fetchTodos();
     } catch (err) {
-      console.error("❌ Failed to complete todo:", err);
+      console.error("Failed to complete todo:", err);
       toast.error("Failed to mark as complete");
     } finally {
       setLoading(false);
@@ -295,15 +287,15 @@ const TodoItem: React.FC<{
       const sig = await connection.sendRawTransaction(signedTx.serialize())
       await connection.confirmTransaction(sig, "confirmed")
 
-      toast.success("✅ Todo deleted!")
+      toast.success("Todo deleted!")
     } catch (err: any) {
       const message = err?.message || err?.toString() || ""
 
       if (message.includes("already been processed") || message.includes("custom program error: 0x0")) {
-        toast.success("✅ Todo deleted!")
+        toast.success("Todo deleted!")
         return
       }
-      console.error("❌ Failed to delete todo:", err)
+      console.error("Failed to delete todo:", err)
       toast.error("Failed to delete todo.")
     } finally {
       setLoading(false)

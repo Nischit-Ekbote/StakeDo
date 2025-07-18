@@ -4,6 +4,7 @@ import { Transaction, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js"
 import { useState, useEffect } from "react"
 import { Wallet, Send, History, Plus, Coins, ExternalLink, Copy, Check } from "lucide-react"
 import { toast } from "sonner"
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 
 interface TransactionData {
   signature: string
@@ -148,11 +149,12 @@ const SolanaWalletDashboard: React.FC = () => {
 
   if (!wallet?.publicKey) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <Wallet className="w-24 h-24 text-purple-300 mx-auto mb-6" />
-          <h1 className="text-4xl text-white mb-4">Solana Wallet Dashboard</h1>
-          <p className="text-purple-200 text-lg">Please connect your wallet to continue</p>
+          <h1 className="text-4xl text-white mb-4">Todo Manager</h1>
+          <p className="text-purple-200 text-lg mb-8">Please connect your wallet to continue</p>
+          <WalletMultiButton />
         </div>
       </div>
     )
