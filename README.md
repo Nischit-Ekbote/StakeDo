@@ -1,13 +1,7 @@
 # 📝 Solana Todo App
 
-![GitHub Repo stars](https://img.shields.io/github/stars/your-username/solana-todo?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/solana-todo?style=flat-square)
-![License](https://img.shields.io/github/license/your-username/solana-todo?style=flat-square)
-
 A full-stack decentralized Todo Manager built on **Solana**, powered by **Anchor**, **Next.js**, and **Tailwind CSS**.  
 Users can connect their wallet, create todos on-chain, and interact with them securely through their browser.
-
-![Banner](https://user-images.githubusercontent.com/your-image-placeholder/banner.png)
 
 ---
 
