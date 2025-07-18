@@ -1,0 +1,340 @@
+{
+  "address": "2fakZCn8BtJsuqAeH7N9cHYxwMyMmZjYjXvjjStTTYTg",
+  "metadata": {
+    "name": "stake_do",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "complete_todo",
+      "discriminator": [
+        45,
+        107,
+        162,
+        240,
+        39,
+        4,
+        61,
+        92
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "todo_account"
+          ]
+        },
+        {
+          "name": "todo_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  100,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "arg",
+                "path": "todo_id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "todo_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "delete_todo",
+      "discriminator": [
+        224,
+        212,
+        234,
+        177,
+        90,
+        57,
+        219,
+        115
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "todo_account"
+          ]
+        },
+        {
+          "name": "todo_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  100,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "arg",
+                "path": "todo_id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "todo_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_todo",
+      "discriminator": [
+        159,
+        78,
+        179,
+        105,
+        124,
+        190,
+        104,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "todo_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  100,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "arg",
+                "path": "todo_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "todo_id",
+          "type": "u64"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "deadline",
+          "type": {
+            "option": "i64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_user",
+      "discriminator": [
+        111,
+        17,
+        185,
+        250,
+        60,
+        122,
+        38,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "TodoAccount",
+      "discriminator": [
+        31,
+        86,
+        84,
+        40,
+        187,
+        31,
+        251,
+        132
+      ]
+    },
+    {
+      "name": "UserAccount",
+      "discriminator": [
+        211,
+        33,
+        136,
+        16,
+        186,
+        110,
+        242,
+        127
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "AlreadyCompleted",
+      "msg": "Todo already completed."
+    },
+    {
+      "code": 6001,
+      "name": "TodoNotCompleted",
+      "msg": "Todo Not Completed."
+    }
+  ],
+  "types": [
+    {
+      "name": "TodoAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "todo_id",
+            "type": "u64"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "deadline",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "updated_at",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "is_completed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "todo_count",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}
